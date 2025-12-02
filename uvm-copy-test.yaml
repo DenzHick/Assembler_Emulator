@@ -1,0 +1,90 @@
+# Тестовая программа для 3-го этапа
+# Цель: проверить команды ldc, read, write, выполнив копирование массива.
+#
+# Логика работы:
+# 1. Инициализация исходных данных:
+#    - Записываем значения 77, 88, 99 в ячейки памяти 100, 101, 102.
+# 2. Копирование данных:
+#    - Читаем значения из ячеек 100, 101, 102.
+#    - Записываем прочитанные значения в ячейки 200, 201, 202.
+
+program:
+  # --- 1. Инициализация исходных данных ---
+
+  # Загружаем адреса для записи (100, 101, 102) в регистры 0, 1, 2
+  - op: ldc
+    const: 100
+    addr: 0
+  - op: ldc
+    const: 101
+    addr: 1
+  - op: ldc
+    const: 102
+    addr: 2
+
+  # Загружаем значения (77, 88, 99) в регистры 10, 11, 12
+  - op: ldc
+    const: 77
+    addr: 10
+  - op: ldc
+    const: 88
+    addr: 11
+  - op: ldc
+    const: 99
+    addr: 12
+
+  # Записываем значения в память
+  # write addr_dst, addr_src -> mem[reg[addr_dst]] = reg[addr_src]
+  - op: write
+    addr_dst: 0  # reg[0] = 100
+    addr_src: 10 # reg[10] = 77
+  - op: write
+    addr_dst: 1  # reg[1] = 101
+    addr_src: 11 # reg[11] = 88
+  - op: write
+    addr_dst: 2  # reg[2] = 102
+    addr_src: 12 # reg[12] = 99
+
+  # --- 2. Копирование данных ---
+
+  # Загружаем базовый адрес источника (100) в регистр 20
+  - op: ldc
+    const: 100
+    addr: 20
+
+  # Читаем данные из памяти в регистры 30, 31, 32
+  # read offset, addr_src, addr_dst -> reg[addr_dst] = mem[reg[addr_src] + offset]
+  - op: read
+    offset: 0
+    addr_src: 20 # reg[20] = 100
+    addr_dst: 30 # reg[30] = mem[100]
+  - op: read
+    offset: 1
+    addr_src: 20 # reg[20] = 100
+    addr_dst: 31 # reg[31] = mem[101]
+  - op: read
+    offset: 2
+    addr_src: 20 # reg[20] = 100
+    addr_dst: 32 # reg[32] = mem[102]
+
+  # Загружаем адреса назначения (200, 201, 202) в регистры 21, 22, 23
+  - op: ldc
+    const: 200
+    addr: 21
+  - op: ldc
+    const: 201
+    addr: 22
+  - op: ldc
+    const: 202
+    addr: 23
+
+  # Записываем прочитанные значения из регистров 30, 31, 32 в новую область памяти
+  - op: write
+    addr_dst: 21 # reg[21] = 200
+    addr_src: 30 # reg[30] - значение из mem[100]
+  - op: write
+    addr_dst: 22 # reg[22] = 201
+    addr_src: 31 # reg[31] - значение из mem[101]
+  - op: write
+    addr_dst: 23 # reg[23] = 202
+    addr_src: 32 # reg[32] - значение из mem[102]
