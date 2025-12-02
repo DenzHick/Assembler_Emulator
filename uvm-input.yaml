@@ -1,0 +1,22 @@
+# Пример программы для ассемблера УВМ
+
+program:
+  - op: ldc
+    const: 29
+    addr: 12
+
+  - op: read
+    offset: 46
+    addr1: 50
+    addr2: 50
+
+  - op: write
+    addr1: 38
+    addr2: 47
+
+  - op: rsh
+    addr1: 6
+    offset1: 36
+    offset2: 35
+    addr2: 19
+    addr3: 11
